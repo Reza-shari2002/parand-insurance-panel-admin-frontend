@@ -1,127 +1,52 @@
-import React, { useState } from "react";
-import { Headset, Zap, ShieldCheck, Menu, X } from "lucide-react";
+import React from "react";
+import { Link, useLocation } from "react-router-dom"; // ایمپورت روتینگ
 
 function Layout({ children }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation(); // گرفتن مسیر فعلی صفحه
 
   return (
-    <div
-      className="min-h-screen flex font-vazir flex-col  bg-[#fafafa]"
-      dir="rtl"
-    >
-      {/* تغییر کلاس به sticky top-0 برای ثابت ماندن هدر هنگام اسکرول */}
-      <header className="w-full h-20 bg-white/95 backdrop-blur-sm shadow-sm py-3 px-6 md:px-16 flex justify-between items-center rounded-b-[24px] sticky top-0 z-[10000]">
-        <div className="flex items-center gap-2">
-          <span className="text-xl md:text-2xl font-black text-[#333333]">
-            پرند <span className="text-orange-500">بیمه</span>
-          </span>
-          <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-            <svg
-              viewBox="0 0 100 100"
-              className="w-7 h-7 md:w-8 md:h-8 fill-orange-500"
-            >
-              <path d="M10 50 C20 40, 40 30, 60 45 C75 55, 90 40, 95 30 C90 50, 75 70, 50 70 C30 70, 15 60, 10 50 Z" />
-              <path
-                d="M40 48 C55 35, 75 25, 90 20 C80 35, 65 50, 45 53 Z"
-                opacity="0.8"
-              />
-            </svg>
-          </div>
+    <div dir="rtl" className="flex min-h-screen bg-gray-100 font-vazir">
+      
+      {/* Sidebar - سمت راست */}
+      <aside className="w-64 bg-white shadow-md flex flex-col items-center py-8">
+        <div className="mb-10">
+          <svg className="text-orange-500" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 256 256">
+            <g fill="currentColor">
+              <path d="M224 152a24 24 0 0 1-24 24h-48a24 24 0 0 1 24 24a24 24 0 0 1-24 24a24 24 0 0 1-24-24v-24h24a24 24 0 0 1-24-24v-24h72a24 24 0 0 1 24 24M104 80h24V56a24 24 0 0 0-24-24a24 24 0 0 0-24 24a24 24 0 0 0 24 24H56a24 24 0 0 0-24 24a24 24 0 0 0 24 24h72v-24a24 24 0 0 0-24-24" opacity="0.2"></path>
+              <path d="M221.13 128A32 32 0 0 0 184 76.31V56a32 32 0 0 0-56-21.13A32 32 0 0 0 76.31 72H56a32 32 0 0 0-21.13 56A32 32 0 0 0 72 179.69V200a32 32 0 0 0 56 21.13A32 32 0 0 0 179.69 184H200a32 32 0 0 0 21.13-56M200 88a16 16 0 0 1 0 32h-16v-16a16 16 0 0 1 16-16m-48-48a16 16 0 0 1 16 16v48a16 16 0 0 1-16 16h-16V56a16 16 0 0 1 16-16M88 56a16 16 0 0 1 32 0v16h-16a16 16 0 0 1-16-16m-48 48a16 16 0 0 1 16-16h48a16 16 0 0 1 16 16v16H56a16 16 0 0 1-16-16m16 64a16 16 0 0 1 0-32h16v16a16 16 0 0 1-16 16m48 48a16 16 0 0 1-16-16v-48a16 16 0 0 1 16-16h16v64a16 16 0 0 1-16 16m64-16a16 16 0 0 1-32 0v-16h16a16 16 0 0 1 16 16m32-32h-48a16 16 0 0 1-16-16v-16h64a16 16 0 0 1 0 32"></path>
+            </g>
+          </svg>
         </div>
-
-        <nav className="hidden md:flex items-center gap-8 text-gray-600 font-medium">
-          <a
-            href="#"
-            className="text-orange-500 border-b-2 border-orange-500 pb-1 font-bold"
-          >
-            صفحه اصلی
-          </a>
-          <a href="#" className="hover:text-orange-500 transition-colors">
-            تماس با ما
-          </a>
+        
+        <nav className="w-full px-4 space-y-4">
+          {/* مسیر فرضی داشبورد (مثلاً /dashboard یا /) */}
+          <SidebarItem to="/" title="داشبورد" active={location.pathname === "/dashboard"} />
+          
         </nav>
+      </aside>
 
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
-          >
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="absolute top-full right-0 left-0 bg-white shadow-lg border-t border-gray-50 flex flex-col p-4 gap-4 md:hidden animate-in slide-in-from-top duration-300">
-            <a
-              href="#"
-              className="text-orange-500 font-bold py-2 border-b border-gray-50"
-            >
-              صفحه اصلی
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 font-medium py-2 hover:text-orange-500"
-            >
-              تماس با ما
-            </a>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-grow relative w-full h-full">{children}</main>
-
-      <footer className="hidden md:block w-full bg-white border-t border-gray-100 py-4 md:py-8 px-4 md:px-12">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-8 text-center md:text-right">
-          <div className="grid grid-cols-1 md:flex md:flex-row w-full justify-between items-center gap-4 md:gap-12">
-            <div className="flex items-center gap-3 justify-center md:justify-start">
-              <div className="text-orange-500 bg-orange-50 p-2 md:p-3 rounded-full shrink-0">
-                <Headset size={20} className="md:w-6 md:h-6" />
-              </div>
-              <div className="flex flex-col items-start md:items-start">
-                <h4 className="font-bold text-gray-800 text-xs md:text-base leading-none">
-                  پشتیبانی سریع
-                </h4>
-                <p className="text-[10px] md:text-sm text-gray-400 mt-1 hidden xs:block">
-                  همه روزه
-                </p>
-              </div>
-            </div>
-
-            <div className="hidden md:block w-px h-8 bg-gray-100"></div>
-
-            <div className="flex items-center gap-3 justify-center md:justify-start border-t border-gray-50 pt-3 md:pt-0 md:border-none w-full md:w-auto">
-              <div className="text-orange-500 bg-orange-50 p-2 md:p-3 rounded-full shrink-0">
-                <Zap size={20} className="md:w-6 md:h-6" />
-              </div>
-              <div className="flex flex-col items-start md:items-start">
-                <h4 className="font-bold text-gray-800 text-xs md:text-base leading-none">
-                  تجربه کاربری آسان
-                </h4>
-                <p className="text-[10px] md:text-sm text-gray-400 mt-1 hidden xs:block">
-                  سریع و ساده
-                </p>
-              </div>
-            </div>
-
-            <div className="hidden md:block w-px h-8 bg-gray-100"></div>
-
-            <div className="flex items-center gap-3 justify-center md:justify-start border-t border-gray-50 pt-3 md:pt-0 md:border-none w-full md:w-auto">
-              <div className="text-orange-500 bg-orange-50 p-2 md:p-3 rounded-full shrink-0">
-                <ShieldCheck size={20} className="md:w-6 md:h-6" />
-              </div>
-              <div className="flex flex-col items-start md:items-start">
-                <h4 className="font-bold text-gray-800 text-xs md:text-base leading-none">
-                  پوشش کامل
-                </h4>
-                <p className="text-[10px] md:text-sm text-gray-400 mt-1 hidden xs:block">
-                  بهترین بیمه‌ها
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Main Content - سمت چپ */}
+      <main className="flex-1 p-8">
+        {children}
+      </main>
+      
     </div>
+  );
+}
+
+// کامپوننت کمکی
+function SidebarItem({ title, to, active }) {
+  return (
+    <Link 
+      to={to} 
+      className={`flex justify-center items-center text-right py-3 px-4 rounded-lg cursor-pointer transition ${
+        active 
+          ? "bg-orange-500 text-white shadow-md shadow-orange-200" // استایل حالت فعال (بک‌گراند نارنجی)
+          : "text-gray-600 hover:bg-orange-50 hover:text-orange-500" // استایل حالت معمولی و هاور
+      }`}
+    >
+      {title}
+    </Link>
   );
 }
 

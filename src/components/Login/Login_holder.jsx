@@ -34,7 +34,7 @@ async function submit(data) {
 
     localStorage.setItem("access_token", token);
 
-    navigate("/home");
+    navigate("/dashboard");
 
   } catch (err) {
 
@@ -49,7 +49,7 @@ async function submit(data) {
     <div className="flex items-center justify-center min-h-screen bg-orange-50 font-vazir">
       <div className="bg-white p-8 rounded-xl shadow-lg w-96">
         <h1 className="text-2xl font-bold text-center text-orange-500 mb-6">
-          پنل ادمین بیمه
+          پنل ادمین پرند بیمه 
         </h1>
 
         <form onSubmit={handleSubmit(submit)} className="space-y-4">

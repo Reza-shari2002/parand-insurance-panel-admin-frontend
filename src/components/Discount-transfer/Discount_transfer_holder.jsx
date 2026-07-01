@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { context } from "../../context/Formcontext";
+import { context } from "../../context/admincontext";
 import schema from "../../schemas/discounttransferschema";
 
 import Progressbarandheader from "../common/Progressbarandheader";

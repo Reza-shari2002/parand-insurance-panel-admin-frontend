@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { context } from "../../context/Formcontext";
+import { context } from "../../context/admincontext";
 function Button_continue({ path, step }) {
   const location = useLocation();
   const currentpath = location.pathname;
