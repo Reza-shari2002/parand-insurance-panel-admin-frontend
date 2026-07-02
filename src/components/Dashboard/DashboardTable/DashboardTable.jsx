@@ -1,11 +1,13 @@
-function BoolBadge({ value }) {
+function Boolbadage({ type, message0, message1 }) {
   return (
     <span
       className={`inline-flex items-center justify-center px-2 py-1 rounded-lg text-xs font-semibold ${
-        value ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-600"
+        type === "0"
+          ? "bg-green-50 text-amber-300"
+          : "bg-gray-100 text-green-500"
       }`}
     >
-      {value ? "دارد" : "ندارد"}
+      {type === "0" ? message0 : message1}
     </span>
   );
 }
@@ -16,9 +18,12 @@ function RowCard({ r, onViewDetails }) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="text-sm font-bold text-gray-900">
-            {r.firstName} {r.lastName}
+            {r.full_name || "-"}
           </div>
-          <div className="text-xs text-gray-500 mt-1">{r.phone}</div>
+
+          <div className="text-xs text-gray-500 mt-1">
+            {r.phone_number || "-"}
+          </div>
         </div>
 
         <button
@@ -29,30 +34,46 @@ function RowCard({ r, onViewDetails }) {
         </button>
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+      <div className="mt-3 grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
         <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2">
           <span className="text-gray-600">نوع کارت</span>
-          <span className="font-semibold text-gray-800">{r.carCardType}</span>
+          <Boolbadage
+            type={r.document_car_type}
+            message0="کارت ماشین"
+            message1="کارت سبز"
+          />
         </div>
 
         <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2">
           <span className="text-gray-600">زمان ایجاد</span>
-          <span className="font-semibold text-gray-800">{r.createdAt}</span>
+          <span className="font-semibold text-gray-800">{r.created_at}</span>
         </div>
 
-        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 col-span-2">
+        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 sm:col-span-2">
           <span className="text-gray-600">انتقال تخفیف تعویض پلاک</span>
-          <BoolBadge value={r.transferDiscountPlateChange} />
+          <Boolbadage
+            type={r.has_discount_transfer}
+            message0="ندارد"
+            message1="دارد"
+          />
         </div>
 
-        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 col-span-2">
+        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 sm:col-span-2">
           <span className="text-gray-600">الحاقیه بیمه‌نامه قبلی</span>
-          <BoolBadge value={r.addendumPrevPolicy} />
+          <Boolbadage
+            type={r.has_active_insurance_transfer}
+            message0="ندارد"
+            message1="دارد"
+          />
         </div>
 
-        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 col-span-2">
+        <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 sm:col-span-2">
           <span className="text-gray-600">انتقال تخفیف به بستگان</span>
-          <BoolBadge value={r.transferToRelatives} />
+          <Boolbadage
+            type={r.is_relative_transfer}
+            message0="ندارد"
+            message1="دارد"
+          />
         </div>
       </div>
     </div>
@@ -62,7 +83,7 @@ function RowCard({ r, onViewDetails }) {
 function DashboardTable({ rows, onViewDetails }) {
   return (
     <div className="w-full">
-      {/* Mobile / Tablet (<md): کارت */}
+      {/* Mobile / Tablet */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden">
         {rows.length === 0 ? (
           <div className="bg-white border border-gray-100 rounded-2xl p-6 text-sm text-gray-500">
@@ -75,14 +96,13 @@ function DashboardTable({ rows, onViewDetails }) {
         )}
       </div>
 
-      {/* Desktop (md+): جدول */}
+      {/* Desktop */}
       <div className="hidden md:block bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-[1100px] w-full text-sm">
             <thead className="bg-gray-50 text-gray-600">
               <tr className="text-right">
-                <th className="py-3 px-4 font-semibold">نام</th>
-                <th className="py-3 px-4 font-semibold">نام خانوادگی</th>
+                <th className="py-3 px-4 font-semibold">نام و نام خانوادگی</th>
                 <th className="py-3 px-4 font-semibold">شماره تماس</th>
                 <th className="py-3 px-4 font-semibold">نوع کارت ماشین</th>
                 <th className="py-3 px-4 font-semibold">
@@ -98,27 +118,44 @@ function DashboardTable({ rows, onViewDetails }) {
             <tbody className="divide-y divide-gray-100">
               {rows.length === 0 ? (
                 <tr>
-                  <td className="py-6 px-4 text-gray-500" colSpan={9}>
+                  <td className="py-6 px-4 text-gray-500" colSpan={8}>
                     موردی یافت نشد.
                   </td>
                 </tr>
               ) : (
                 rows.map((r) => (
                   <tr key={r.id} className="hover:bg-orange-50/40 transition">
-                    <td className="py-3 px-4 text-gray-800">{r.firstName}</td>
-                    <td className="py-3 px-4 text-gray-800">{r.lastName}</td>
-                    <td className="py-3 px-4 text-gray-800">{r.phone}</td>
-                    <td className="py-3 px-4 text-gray-800">{r.carCardType}</td>
-                    <td className="py-3 px-4">
-                      <BoolBadge value={r.transferDiscountPlateChange} />
+                    <td className="py-3 px-4 text-gray-800">{r.full_name}</td>
+                    <td className="py-3 px-4 text-gray-800">{r.phone_number}</td>
+                    <td className="py-3 px-4 text-gray-800">
+                      <Boolbadage
+                        type={r.document_car_type}
+                        message0="کارت ماشین"
+                        message1="کارت سبز"
+                      />
                     </td>
                     <td className="py-3 px-4">
-                      <BoolBadge value={r.addendumPrevPolicy} />
+                      <Boolbadage
+                        type={r.has_discount_transfer}
+                        message0="ندارد"
+                        message1="دارد"
+                      />
                     </td>
                     <td className="py-3 px-4">
-                      <BoolBadge value={r.transferToRelatives} />
+                      <Boolbadage
+                        type={r.has_active_insurance_transfer}
+                        message0="ندارد"
+                        message1="دارد"
+                      />
                     </td>
-                    <td className="py-3 px-4 text-gray-700">{r.createdAt}</td>
+                    <td className="py-3 px-4">
+                      <Boolbadage
+                        type={r.is_relative_transfer}
+                        message0="ندارد"
+                        message1="دارد"
+                      />
+                    </td>
+                    <td className="py-3 px-4 text-gray-700">{r.created_at}</td>
                     <td className="py-3 px-4">
                       <button
                         onClick={() => onViewDetails?.(r)}

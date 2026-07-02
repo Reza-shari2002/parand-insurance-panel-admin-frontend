@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "../pages/login/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
-import adminProvider from "../context/admincontext";
+import AdminProvider from "../context/admincontext";
 function App() {
   const router = createBrowserRouter([
 
@@ -12,9 +12,9 @@ function App() {
   ]);
   return (
     <>
-      <adminProvider>
+      <AdminProvider>
         <RouterProvider router={router}></RouterProvider>
-      </adminProvider>
+      </AdminProvider>
     </>
   );
 }
