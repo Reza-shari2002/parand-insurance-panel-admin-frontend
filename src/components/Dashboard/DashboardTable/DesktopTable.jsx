@@ -82,3 +82,5 @@ function DesktopTable({ rows, onViewDetails }) {
     </div>
   );
 }
+
+export default DesktopTable

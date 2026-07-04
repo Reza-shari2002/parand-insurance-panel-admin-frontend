@@ -3,16 +3,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import loginSchema from "../../schemas/loginSchema";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { loginService } from "../../services/Login";
-
+import useLogin from "../../hooks/Login/useLogin";
 
 function LoginHolder() {
-  const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const {loading , setLoading  , serverError , setServerError , submit} = useLogin()
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -23,27 +20,7 @@ function LoginHolder() {
     resolver: yupResolver(loginSchema),
   });
 
-async function submit(data) {
-  try {
-    setLoading(true);
-    setServerError("");
 
-    const res = await loginService(data);
-
-    const token = res.access_token;
-
-    localStorage.setItem("access_token", token);
-
-    navigate("/dashboard");
-
-  } catch (err) {
-
-    setServerError(err.message || "خطا در ورود");
-
-  } finally {
-    setLoading(false);
-  }
-}
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-orange-50 font-vazir">
