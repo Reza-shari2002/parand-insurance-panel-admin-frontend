@@ -25,6 +25,7 @@ function DashboardHolder() {
 
   // صفحه‌بندی
   const {
+    onViewDetails,
     page,
     setPage,
     pageCount,
@@ -45,6 +46,7 @@ function DashboardHolder() {
 
       <DashboardTable
         rows={pagedRows}
+        onViewDetails={onViewDetails}
       />
 
       <DashboardPagination

@@ -15,7 +15,7 @@ function RowCard({ r, onViewDetails }) {
         </div>
 
         <button
-          onClick={() => onViewDetails?.(r)}
+          onClick={() => onViewDetails?.(r.id)}
           className="h-9 px-3 rounded-xl bg-white border border-orange-200 text-orange-600 text-xs font-semibold hover:bg-orange-50 transition"
         >
           مشاهده

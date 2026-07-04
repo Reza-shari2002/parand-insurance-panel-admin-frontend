@@ -67,7 +67,7 @@ function DesktopTable({ rows, onViewDetails }) {
                   <td className="py-3 px-4 text-gray-700">{r.created_at}</td>
                   <td className="py-3 px-4">
                     <button
-                      onClick={() => onViewDetails?.(r)}
+                      onClick={() => onViewDetails?.(r.id)}
                       className="h-9 px-3 rounded-xl bg-white border border-orange-200 text-orange-600 font-semibold hover:bg-orange-50 transition"
                     >
                       مشاهده
