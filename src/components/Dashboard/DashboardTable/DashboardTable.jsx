@@ -108,8 +108,12 @@ function DashboardTable({ rows, onViewDetails }) {
                 <th className="py-3 px-4 font-semibold">
                   درخواست انتقال تخفیف تعویض پلاک
                 </th>
-                <th className="py-3 px-4 font-semibold">الحاقیه بیمه‌نامه قبلی</th>
-                <th className="py-3 px-4 font-semibold">انتقال تخفیف به بستگان</th>
+                <th className="py-3 px-4 font-semibold">
+                  الحاقیه بیمه‌نامه قبلی
+                </th>
+                <th className="py-3 px-4 font-semibold">
+                  انتقال تخفیف به بستگان
+                </th>
                 <th className="py-3 px-4 font-semibold">زمان ایجاد</th>
                 <th className="py-3 px-4 font-semibold">مشاهده جزئیات</th>
               </tr>
@@ -126,7 +130,9 @@ function DashboardTable({ rows, onViewDetails }) {
                 rows.map((r) => (
                   <tr key={r.id} className="hover:bg-orange-50/40 transition">
                     <td className="py-3 px-4 text-gray-800">{r.full_name}</td>
-                    <td className="py-3 px-4 text-gray-800">{r.phone_number}</td>
+                    <td className="py-3 px-4 text-gray-800">
+                      {r.phone_number}
+                    </td>
                     <td className="py-3 px-4 text-gray-800">
                       <Boolbadage
                         type={r.document_car_type}
