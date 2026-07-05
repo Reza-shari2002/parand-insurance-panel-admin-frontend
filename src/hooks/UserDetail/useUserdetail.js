@@ -1,33 +1,51 @@
-    
-import {getuserdetail}  from '../../services/UserDetailservice'
-import { useEffect  , useState } from 'react';
-import {  useParams } from "react-router-dom";
-    function useUserdetail(id){
+import { useEffect, useState } from 'react';
+import { getuserdetail } from '../../services/UserDetailservice';
 
-            
-    const [data , set_data] = useState({})
-    const [loading , set_loading] = useState(true)
-    useEffect(()=>{
-        async function get_data() {
-                 try{
-            const data = await getuserdetail(id)
-            console.log(data)
-            set_data(data);
-            set_loading(false)
-        }
-        catch(err){
-            alert(err.response.data.message)
-        }
-        }
-        get_data()
+function useUserdetail(id) {
+    // ۱. مقدار اولیه را null می‌گذاریم تا وضعیت خالی بودن داده مشخص باشد
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        let isMounted = true; // جلوگیری از آپدیت State در صورت Unmount شدن کامپوننت
         
-    },[])
+        async function get_data() {
+            if (!id) return;
+            
+            setLoading(true);
+            setError(null);
+            
+            try {
+                const responseData = await getuserdetail(id);
+                if (isMounted) {
+                    setData(responseData);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    setLoading(false);
+                    const errorMessage = err?.response?.data?.message || err?.message || "خطایی در دریافت اطلاعات رخ داد";
+                    setError(errorMessage);
+                    alert(errorMessage);
+                }
+            }
+        }
 
-    return ({data : data  , set_data : set_data, loading : loading , set_loading : set_loading});
+        get_data();
 
+        // Cleanup function
+        return () => {
+            isMounted = false;
+        };
+    }, [id]); 
+    return { 
+        data, 
+        setData, 
+        loading, 
+        setLoading,
+        error 
+    };
+}
 
-    }
-
-
-    export default useUserdetail;
-    
+export default useUserdetail;
