@@ -16,7 +16,7 @@ function Layout({ children }) {
         {/* دکمه همبرگری */}
         <button 
           onClick={() => setIsOpen(true)} 
-          className="text-gray-600 hover:text-orange-500 transition-all focus:outline-none p-1"
+          className="text-gray-600 hover:text-orange-500 transition-all focus:outline-none p-1  "
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="21" y1="10" x2="3" y2="10"></line>
@@ -107,7 +107,7 @@ function SidebarItem({ title, to, active, onClick }) {
       className={`flex justify-center items-center text-right py-3 px-4 rounded-xl cursor-pointer transition-all duration-200 text-sm font-semibold w-full ${
         active 
           ? "bg-orange-500 text-white shadow-md shadow-orange-200" // فعال
-          : "text-gray-600 hover:bg-orange-50 hover:text-orange-500" // غیرفعال
+          : "text-gray-600 border border-orange-200 hover:bg-orange-50 hover:text-orange-500"
       }`}
     >
       {title}
