@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { getuserdetail } from '../../services/UserDetailservice';
 
 function useUserdetail(id) {
-    // ۱. مقدار اولیه را null می‌گذاریم تا وضعیت خالی بودن داده مشخص باشد
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
