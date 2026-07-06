@@ -1,4 +1,4 @@
-import Boolbadage from "./Boolbadage";
+import {Boolbadage} from "./Boolbadage";
 
 function RowCard({ r, onViewDetails }) {
   return (

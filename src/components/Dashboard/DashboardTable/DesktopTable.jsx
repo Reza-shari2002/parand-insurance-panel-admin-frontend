@@ -1,5 +1,5 @@
-import Boolbadage from "./Boolbadage";
-
+import {Boolbadage} from "./Boolbadage";
+import { Boolbadage_3message } from "./Boolbadage";
 function DesktopTable({ rows, onViewDetails }) {
   return (
     <div className="hidden md:block bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
@@ -9,6 +9,7 @@ function DesktopTable({ rows, onViewDetails }) {
             <tr className="text-right">
               <th className="py-3 px-4 font-semibold">نام و نام خانوادگی</th>
               <th className="py-3 px-4 font-semibold">شماره تماس</th>
+              <th className="py-3 px-4 font-semibold">نوع پرداخت</th>
               <th className="py-3 px-4 font-semibold">نوع کارت ماشین</th>
               <th className="py-3 px-4 font-semibold">
                 درخواست انتقال تخفیف تعویض پلاک
@@ -36,6 +37,7 @@ function DesktopTable({ rows, onViewDetails }) {
                 <tr key={r.id} className="hover:bg-orange-50/40 transition">
                   <td className="py-3 px-4 text-gray-800">{r.full_name}</td>
                   <td className="py-3 px-4 text-gray-800">{r.phone_number}</td>
+                  <td className="py-3 px-4 text-gray-800"><Boolbadage_3message type={r.payment_type} message0={'نقد'} message1={'اقساط'} message2={' هر دو'}></Boolbadage_3message></td>
                   <td className="py-3 px-4 text-gray-800">
                     <Boolbadage
                       type={r.document_car_type}

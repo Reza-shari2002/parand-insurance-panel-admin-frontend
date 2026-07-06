@@ -1,5 +1,5 @@
 import RowCard from "./RowCard.jsx";
-import Boolbadage from "./Boolbadage.jsx";
+import {Boolbadage} from "./Boolbadage.jsx";
 function MobileTable({ rows, onViewDetails }){
 
     return(<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden">
