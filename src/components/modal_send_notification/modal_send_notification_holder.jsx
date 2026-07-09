@@ -3,13 +3,15 @@ import useModal_send_notification from "../../hooks/modal_send_notification/useM
 function Modal_send_notification_holder({ phone_number, full_name }) {
   const {
     isOpen,
-    loading,
-    form,
+    serverError,
+    register,
+    errors,
+    paymentType,
     previewMessage,
+    isSubmitting,
     openModal,
     closeModal,
-    handleChange,
-    handleSubmit,
+    onSubmit,
   } = useModal_send_notification({ phone_number, full_name });
 
   return (
@@ -47,15 +49,20 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5 px-6 py-5">
+            <form onSubmit={onSubmit} className="space-y-5 px-6 py-5">
+              {serverError && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {serverError}
+                </div>
+              )}
+
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-slate-700">
                     نام و نام خانوادگی
                   </label>
                   <input
-                    name="full_name"
-                    value={form.full_name}
+                    {...register("full_name")}
                     readOnly
                     className="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm outline-none"
                   />
@@ -66,8 +73,7 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                     شماره تلفن
                   </label>
                   <input
-                    name="phone_number"
-                    value={form.phone_number}
+                    {...register("phone_number")}
                     readOnly
                     className="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm outline-none"
                   />
@@ -78,12 +84,17 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                     نام خودرو
                   </label>
                   <input
-                    name="car_name"
-                    value={form.car_name}
-                    onChange={handleChange}
+                    {...register("car_name", {
+                      required: "نام خودرو الزامی است",
+                    })}
                     placeholder="مثلاً پراید"
                     className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   />
+                  {errors.car_name && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.car_name.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -91,13 +102,22 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                     مبلغ کل
                   </label>
                   <input
-                    name="total_cost"
                     type="number"
-                    value={form.total_cost}
-                    onChange={handleChange}
+                    {...register("total_cost", {
+                      required: "مبلغ کل الزامی است",
+                      min: {
+                        value: 1,
+                        message: "مبلغ کل باید بیشتر از صفر باشد",
+                      },
+                    })}
                     placeholder="مثلاً 300000"
                     className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   />
+                  {errors.total_cost && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.total_cost.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -109,17 +129,15 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                 <div className="grid grid-cols-2 gap-3">
                   <label
                     className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition ${
-                      form.payment_type === "0"
+                      paymentType === "0"
                         ? "border-orange-500 bg-orange-50 text-orange-600"
                         : "border-slate-200 text-slate-600 hover:bg-slate-50"
                     }`}
                   >
                     <input
                       type="radio"
-                      name="payment_type"
                       value="0"
-                      checked={form.payment_type === "0"}
-                      onChange={handleChange}
+                      {...register("payment_type")}
                       className="accent-orange-500"
                     />
                     نقد
@@ -127,17 +145,15 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
 
                   <label
                     className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition ${
-                      form.payment_type === "1"
+                      paymentType === "1"
                         ? "border-orange-500 bg-orange-50 text-orange-600"
                         : "border-slate-200 text-slate-600 hover:bg-slate-50"
                     }`}
                   >
                     <input
                       type="radio"
-                      name="payment_type"
                       value="1"
-                      checked={form.payment_type === "1"}
-                      onChange={handleChange}
+                      {...register("payment_type")}
                       className="accent-orange-500"
                     />
                     اقساط
@@ -145,20 +161,29 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                 </div>
               </div>
 
-              {form.payment_type === "1" && (
+              {paymentType === "1" && (
                 <div className="grid grid-cols-1 gap-4 rounded-2xl border border-orange-100 bg-orange-50/50 p-4 md:grid-cols-3">
                   <div>
                     <label className="mb-1 block text-sm font-medium text-slate-700">
                       پیش پرداخت
                     </label>
                     <input
-                      name="precome"
                       type="number"
-                      value={form.precome}
-                      onChange={handleChange}
+                      {...register("precome", {
+                        required: paymentType === "1" ? "پیش پرداخت الزامی است" : false,
+                        min: {
+                          value: 0,
+                          message: "پیش پرداخت نمی‌تواند منفی باشد",
+                        },
+                      })}
                       placeholder="مثلاً 20000"
                       className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                     />
+                    {errors.precome && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.precome.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -166,13 +191,22 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                       مبلغ هر قسط
                     </label>
                     <input
-                      name="cost_of_rate"
                       type="number"
-                      value={form.cost_of_rate}
-                      onChange={handleChange}
+                      {...register("cost_of_rate", {
+                        required: paymentType === "1" ? "مبلغ هر قسط الزامی است" : false,
+                        min: {
+                          value: 1,
+                          message: "مبلغ هر قسط باید بیشتر از صفر باشد",
+                        },
+                      })}
                       placeholder="مثلاً 800"
                       className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                     />
+                    {errors.cost_of_rate && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.cost_of_rate.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -180,13 +214,22 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
                       تعداد ماه
                     </label>
                     <input
-                      name="count_of_rate"
                       type="number"
-                      value={form.count_of_rate}
-                      onChange={handleChange}
+                      {...register("count_of_rate", {
+                        required: paymentType === "1" ? "تعداد ماه الزامی است" : false,
+                        min: {
+                          value: 1,
+                          message: "تعداد ماه باید بیشتر از صفر باشد",
+                        },
+                      })}
                       placeholder="مثلاً 3"
                       className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                     />
+                    {errors.count_of_rate && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.count_of_rate.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -211,10 +254,10 @@ function Modal_send_notification_holder({ phone_number, full_name }) {
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={isSubmitting}
                   className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {loading ? "در حال ارسال..." : "تایید و ارسال"}
+                  {isSubmitting ? "در حال ارسال..." : "تایید و ارسال"}
                 </button>
               </div>
             </form>
