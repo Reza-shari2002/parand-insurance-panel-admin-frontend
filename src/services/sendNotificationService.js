@@ -10,7 +10,7 @@ async function sendNotificationService(payload) {
     const response = await axiosInstance.post("/notification/send", payload);
     return response.data;
   } catch (error) {
-    // خطای دریافتی جهت مدیریت در کنترلر یا هوک پرتاب می‌شود
+    console.log(error)
     throw error;
   }
 }
