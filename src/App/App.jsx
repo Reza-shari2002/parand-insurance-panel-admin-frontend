@@ -8,7 +8,10 @@ import UserDetail from "../pages/UserDetail/UserDetail";
 function App() {
   const router = createBrowserRouter([
 
-
+   {
+      path: "/",
+      element: <Navigate to="/login" replace />, // ریدایرکت از روت اصلی به /home
+    },
     { path: "/Login", element: <Login></Login>  },{path:"/Dashboard" , element:<Dashboard></Dashboard>}  , {path:'/User/:id' , element:<UserDetail></UserDetail>}
   ]);
   return (
