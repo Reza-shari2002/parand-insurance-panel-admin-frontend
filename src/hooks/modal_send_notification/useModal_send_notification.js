@@ -73,14 +73,14 @@ function useModal_send_notification({ full_name, phone_number }) {
         ? new Date(date).toLocaleDateString("fa-IR")
         : "-";
 
-      return `کاربر گرامی آقای ${full_name || "-"}، بیمه نامه خودرو ${car_name || "-"} به مبلغ ${formattedTotalCost} ریال به صورت نقد در تاریخ ${formattedDate} برای شما ثبت گردید.`;
+      return `کاربر گرامی آقا/خانم ${full_name || "-"}، بیمه نامه خودرو ${car_name || "-"} به مبلغ ${formattedTotalCost} ریال به صورت نقد در تاریخ ${formattedDate} برای شما ثبت گردید.`;
     }
 
     const formattedDate = date
       ? new Date(date).toLocaleDateString("fa-IR")
       : "-";
 
-    return `کاربر گرامی آقای ${full_name || "-"}، بیمه نامه خودرو ${car_name || "-"} به مبلغ کل ${formattedTotalCost} ریال به صورت اقساط با پیش پرداخت ${formattedPrecome} ریال و ${count_of_rate || 0} ماهه و اقساط ${formattedCostOfRate} ریال در تاریخ ${formattedDate} برای شما ثبت گردید.`;
+    return `کاربر گرامی آقا/خانم ${full_name || "-"}، بیمه نامه خودرو ${car_name || "-"} به مبلغ کل ${formattedTotalCost} ریال به صورت اقساط با پیش پرداخت ${formattedPrecome} ریال و ${count_of_rate || 0} ماهه و اقساط ${formattedCostOfRate} ریال در تاریخ ${formattedDate} برای شما ثبت گردید.`;
   };
 
   const previewMessage = useMemo(() => {
