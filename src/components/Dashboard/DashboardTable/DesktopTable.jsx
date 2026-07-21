@@ -1,3 +1,24 @@
+function formatIranianDate(dateValue) {
+  if (!dateValue) return "—";
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return "تاریخ نامعتبر";
+  }
+
+  return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+    timeZone: "Asia/Tehran",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
+}
+
+
 import {Boolbadage} from "./Boolbadage";
 import { Boolbadage_3message } from "./Boolbadage";
 function DesktopTable({ rows, onViewDetails }) {
@@ -66,7 +87,12 @@ function DesktopTable({ rows, onViewDetails }) {
                       message1="دارد"
                     />
                   </td>
-                  <td className="py-3 px-4 text-gray-700">{r.created_at}</td>
+                  <td
+  className="py-3 px-4 text-gray-700 whitespace-nowrap"
+  dir="ltr"
+>
+  {formatIranianDate(r.created_at)}
+</td>
                   <td className="py-3 px-4">
                     <button
                       onClick={() => onViewDetails?.(r.id)}

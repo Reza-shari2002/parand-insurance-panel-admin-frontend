@@ -1,4 +1,24 @@
 import {Boolbadage} from "./Boolbadage";
+function formatIranianDate(dateValue) {
+  if (!dateValue) return "—";
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return "تاریخ نامعتبر";
+  }
+
+  return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+    timeZone: "Asia/Tehran",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
+}
+
 
 function RowCard({ r, onViewDetails }) {
   return (
@@ -34,7 +54,7 @@ function RowCard({ r, onViewDetails }) {
 
         <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2">
           <span className="text-gray-600">زمان ایجاد</span>
-          <span className="font-semibold text-gray-800">{r.created_at}</span>
+          <span className="font-semibold text-gray-800"> {formatIranianDate(r.created_at)}</span>
         </div>
 
         <div className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2 sm:col-span-2">
